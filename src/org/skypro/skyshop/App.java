@@ -17,20 +17,13 @@ public class App {
 
         System.out.println("Содержимое корзины:");
         basket.printBasket();
-
         System.out.println("Общая стоимость корзины: " + basket.getTotalCost());
-
         System.out.println("Есть ли в корзине Яблоко: " + basket.containsProduct("Яблоко"));
-
         System.out.println("Есть ли в корзине Торт: " + basket.containsProduct("Торт"));
-
         basket.clearBasket();
-
         System.out.println("Содержимое пустой корзины:");
         basket.printBasket();
-
         System.out.println("Общая стоимость пустой корзины: " + basket.getTotalCost());
-
         System.out.println("Есть ли в корзине Яблоко: " + basket.containsProduct("Яблоко"));
     }
 }
