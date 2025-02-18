@@ -38,10 +38,12 @@ public class ProductBasket {
         }
 
         for (Product product : products) {
-            System.out.println(product.toString());
-            totalCost += product.getCost();
-            if (product.isSpecial()) {
-                specialProductsCount++;
+            if (product != null) { // Добавлена проверка на null
+                System.out.println(product.toString());
+                totalCost += product.getCost();
+                if (product.isSpecial()) {
+                    specialProductsCount++;
+                }
             }
         }
 
