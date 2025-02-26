@@ -2,6 +2,7 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixCostProduct;
 import org.skypro.skyshop.product.SimpleProduct;
@@ -10,6 +11,33 @@ import org.skypro.skyshop.search.Searchable;
 
 public class App {
     public static void main(String[] args) {
+        try {
+            new SimpleProduct("Valid Product", 10.0);
+            new DiscountedProduct("Valid Discounted Product", 20.0, 10);
+
+            new SimpleProduct("Invalid Product", 0);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error creating SimpleProduct: " + e.getMessage());
+        }
+
+        try {
+            new DiscountedProduct("Invalid Discounted Product", 0, 10);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error creating DiscountedProduct (invalid price): " + e.getMessage());
+        }
+
+        try {
+            new DiscountedProduct("Invalid Discounted Product", 20.0, 101);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error creating DiscountedProduct (invalid discount): " + e.getMessage());
+        }
+
+        try {
+            new SimpleProduct("", 10);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error creating Product with empty name: " + e.getMessage());
+        }
+
         ProductBasket basket = new ProductBasket();
 
         SimpleProduct apple = new SimpleProduct("Яблоко", 100.0);
@@ -24,7 +52,7 @@ public class App {
         basket.addProduct(orange);
         basket.addProduct(chocolate);
 
-        System.out.println("Содержимое корзины:");
+        System.out.println("\nСодержимое корзины:");
         basket.printBasket();
         System.out.println("Общая стоимость корзины: " + basket.getTotalCost());
         System.out.println("Есть ли в корзине Яблоко: " + basket.containsProduct("Яблоко"));
@@ -86,6 +114,22 @@ public class App {
             } else {
                 System.out.println("null");
             }
+        }
+
+        System.out.println("\nDemonstration of best match search:");
+
+        try {
+            Searchable bestMatch = searchEngine.findBestMatch("яблоки");
+            System.out.println("Best match for 'яблоки': " + bestMatch.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.err.println("Error finding best match: " + e.getMessage());
+        }
+
+        try {
+            Searchable bestMatch = searchEngine.findBestMatch("Несуществующий запрос");
+            System.out.println("Best match for 'Несуществующий запрос': " + bestMatch.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.err.println("Error finding best match: " + e.getMessage());
         }
     }
 }
