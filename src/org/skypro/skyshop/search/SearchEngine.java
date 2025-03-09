@@ -2,6 +2,8 @@ package org.skypro.skyshop.search;
 
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
+import java.util.*;
+
 public class SearchEngine {
     private final Searchable[] searchables;
     private int currentIndex = 0;
@@ -10,17 +12,12 @@ public class SearchEngine {
         this.searchables = new Searchable[size];
     }
 
-    public Searchable[] search(String searchTerm) {
-        Searchable[] results = new Searchable[5];
-        int resultIndex = 0;
+    public Map<String, Searchable> search(String searchTerm) {
+        Map<String, Searchable> results = new TreeMap<>();
 
         for (Searchable searchable : searchables) {
             if (searchable != null && searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results[resultIndex] = searchable;
-                resultIndex++;
-                if (resultIndex == 5) {
-                    break;
-                }
+                results.put(searchable.getSearchableName(), searchable);
             }
         }
 
