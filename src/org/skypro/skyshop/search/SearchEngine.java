@@ -5,17 +5,12 @@ import org.skypro.skyshop.exceptions.BestResultNotFound;
 import java.util.*;
 
 public class SearchEngine {
-    private final Searchable[] searchables;
-    private int currentIndex = 0;
-
-    public SearchEngine(int size) {
-        this.searchables = new Searchable[size];
-    }
+    private final List<Searchable> searchable = new ArrayList<>();
 
     public Map<String, Searchable> search(String searchTerm) {
         Map<String, Searchable> results = new TreeMap<>();
 
-        for (Searchable searchable : searchables) {
+        for (Searchable searchable : searchable) {
             if (searchable != null && searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
                 results.put(searchable.getSearchableName(), searchable);
             }
@@ -25,19 +20,14 @@ public class SearchEngine {
     }
 
     public void add(Searchable searchable) {
-        if (currentIndex < searchables.length) {
-            searchables[currentIndex] = searchable;
-            currentIndex++;
-        } else {
-            System.out.println("Search engine is full.");
-        }
+        this.searchable.add(searchable);
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         Searchable bestMatch = null;
         int maxOccurrences = 0;
 
-        for (Searchable searchable : searchables) {
+        for (Searchable searchable : searchable) {
             if (searchable != null) {
                 String searchTerm = searchable.getSearchTerm().toLowerCase();
                 String searchLower = search.toLowerCase();

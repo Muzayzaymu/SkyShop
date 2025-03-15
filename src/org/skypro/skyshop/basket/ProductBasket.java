@@ -3,6 +3,7 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class ProductBasket {
             products.put(productName, new ArrayList<>());
         }
         products.get(productName).add(product);
+
     }
 
     public double getTotalCost() {

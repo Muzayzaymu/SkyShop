@@ -5,6 +5,7 @@ import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixCostProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
@@ -59,13 +60,32 @@ public class App {
         System.out.println("Общая стоимость корзины: " + basket.getTotalCost());
         System.out.println("Есть ли в корзине Яблоко: " + basket.containsProduct("Яблоко"));
         System.out.println("Есть ли в корзине Торт: " + basket.containsProduct("Торт"));
+
+        System.out.println("\nУдаляем 'Банан со скидкой' из корзины:");
+        List<Product> removedProducts = basket.removeProduct("Банан со скидкой");
+        if (!removedProducts.isEmpty()) {
+            System.out.println("Удаленные продукты:");
+            removedProducts.forEach(product -> System.out.println(product.toString()));
+        }
+        System.out.println("\nСодержимое корзины после удаления:");
+        basket.printBasket();
+
+        System.out.println("\nУдаляем несуществующий продукт 'Торт':");
+        List<Product> removedProducts2 = basket.removeProduct("Торт");
+        if (removedProducts2.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+        System.out.println("\nСодержимое корзины после попытки удаления несуществующего продукта:");
+        basket.printBasket();
+
+
         basket.clearBasket();
         System.out.println("Содержимое пустой корзины:");
         basket.printBasket();
         System.out.println("Общая стоимость пустой корзины: " + basket.getTotalCost());
         System.out.println("Есть ли в корзине Яблоко: " + basket.containsProduct("Яблоко"));
 
-        SearchEngine searchEngine = new SearchEngine(10);
+        SearchEngine searchEngine = new SearchEngine(); // Removed size parameter
         searchEngine.add(apple);
         searchEngine.add(banana);
         searchEngine.add(gum);
@@ -78,6 +98,7 @@ public class App {
         searchEngine.add(article2);
 
         System.out.println("\nSearch Engine Demonstration:");
+
         Map<String, Searchable> results1 = searchEngine.search("яблоко");
         System.out.println("Search results for 'яблоко':");
         for (Searchable result : results1.values()) {
@@ -99,6 +120,7 @@ public class App {
         Map<String, Searchable> results4 = searchEngine.search("Жвачка");
         System.out.println("\nSearch results for 'Жвачка':");
         for (Searchable result : results4.values()) {
+
             System.out.println(result.getStringRepresentation());
         }
 
