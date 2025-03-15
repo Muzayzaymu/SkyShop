@@ -15,6 +15,7 @@ public abstract class Product implements Searchable {
     public String getName() {
         return name;
     }
+
     public abstract double getCost();
 
     public boolean isSpecial() {

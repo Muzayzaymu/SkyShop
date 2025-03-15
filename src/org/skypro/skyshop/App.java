@@ -10,7 +10,7 @@ import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
-import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -98,29 +98,32 @@ public class App {
         searchEngine.add(article2);
 
         System.out.println("\nSearch Engine Demonstration:");
-        List<Searchable> results1 = searchEngine.search("яблоко");
+
+        Map<String, Searchable> results1 = searchEngine.search("яблоко");
         System.out.println("Search results for 'яблоко':");
-        for (Searchable result : results1) {
+        for (Searchable result : results1.values()) {
             System.out.println(result.getStringRepresentation());
         }
 
-        List<Searchable> results2 = searchEngine.search("бананы");
+        Map<String, Searchable> results2 = searchEngine.search("бананы");
         System.out.println("\nSearch results for 'бананы':");
-        for (Searchable result : results2) {
+        for (Searchable result : results2.values()) {
             System.out.println(result.getStringRepresentation());
         }
 
-        List<Searchable> results3 = searchEngine.search("как выбрать");
+        Map<String, Searchable> results3 = searchEngine.search("как выбрать");
         System.out.println("\nSearch results for 'как выбрать':");
-        for (Searchable result : results3) {
+        for (Searchable result : results3.values()) {
             System.out.println(result.getStringRepresentation());
         }
 
-        List<Searchable> results4 = searchEngine.search("Жвачка");
+        Map<String, Searchable> results4 = searchEngine.search("Жвачка");
         System.out.println("\nSearch results for 'Жвачка':");
-        for (Searchable result : results4) {
+        for (Searchable result : results4.values()) {
+
             System.out.println(result.getStringRepresentation());
         }
+
 
         System.out.println("\nDemonstration of best match search:");
 

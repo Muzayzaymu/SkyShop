@@ -3,26 +3,32 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductBasket {
-    private final List<Product> products = new ArrayList<>();
-
+    private final Map<String, List<Product>> products = new HashMap<>();
 
     public void addProduct(Product product) {
-        products.add(product);
+        String productName = product.getName();
+        if (!products.containsKey(productName)) {
+            products.put(productName, new ArrayList<>());
+        }
+        products.get(productName).add(product);
+
     }
 
-    public int getTotalCost() {
-        int totalCost = 0;
-        for (Product product : products) {
-            if (product != null) {
-                totalCost += (int) product.getCost();
+    public double getTotalCost() {
+        double totalCost = 0;
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                totalCost += product.getCost();
             }
         }
         return totalCost;
     }
-
 
     public void printBasket() {
         double totalCost = 0;
@@ -33,9 +39,9 @@ public class ProductBasket {
             return;
         }
 
-        for (Product product : products) {
-            if (product != null) {
-                System.out.println(product);
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                System.out.println(product.toString());
                 totalCost += product.getCost();
                 if (product.isSpecial()) {
                     specialProductsCount++;
@@ -48,28 +54,10 @@ public class ProductBasket {
     }
 
     public boolean containsProduct(String productName) {
-        for (Product product : products) {
-            if (product != null && product.getName().equals(productName)) {
-                return true;
-            }
-        }
-        return false;
+        return products.containsKey(productName);
     }
-
 
     public void clearBasket() {
         products.clear();
-    }
-
-    public List<Product> removeProduct(String name) {
-        List<Product> removedProducts = new ArrayList<>();
-        products.removeIf(product -> {
-            if (product.getName().equals(name)) {
-                removedProducts.add(product);
-                return true;
-            }
-            return false;
-        });
-        return removedProducts;
     }
 }
