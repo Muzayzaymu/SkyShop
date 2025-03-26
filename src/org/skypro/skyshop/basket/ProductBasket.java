@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class ProductBasket {
     private final Map<String, List<Product>> products = new HashMap<>();
 
@@ -19,36 +20,32 @@ public class ProductBasket {
     }
 
     public double getTotalCost() {
-        double totalCost = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                totalCost += product.getCost();
-            }
-        }
-        return totalCost;
+        return products.values().stream()
+                .flatMap(List::stream)
+                .mapToDouble(Product::getCost)
+                .sum();
     }
 
     public void printBasket() {
-        double totalCost = 0;
-        int specialProductsCount = 0;
-
         if (products.isEmpty()) {
             System.out.println("В корзине пусто");
             return;
         }
 
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                System.out.println(product.toString());
-                totalCost += product.getCost();
-                if (product.isSpecial()) {
-                    specialProductsCount++;
-                }
-            }
-        }
+        double totalCost = getTotalCost();
+        products.values().stream()
+                .flatMap(List::stream)
+                .forEach(System.out::println);
 
         System.out.println("Итого: " + totalCost);
-        System.out.println("Специальных товаров: " + specialProductsCount);
+        System.out.println("Специальных товаров: " + getSpecialCount());
+    }
+
+    private long getSpecialCount() {
+        return products.values().stream()
+                .flatMap(List::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public boolean containsProduct(String productName) {
