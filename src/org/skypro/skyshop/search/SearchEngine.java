@@ -5,14 +5,22 @@ import org.skypro.skyshop.exceptions.BestResultNotFound;
 import java.util.*;
 
 public class SearchEngine {
-    private final List<Searchable> searchable = new ArrayList<>();
+    private final Set<Searchable> searchables = new HashSet<>();
 
-    public Map<String, Searchable> search(String searchTerm) {
-        Map<String, Searchable> results = new TreeMap<>();
+    public Set<Searchable> search(String searchTerm) {
+        Comparator<Searchable> comparator = (s1, s2) -> {
+            int lengthComparison = Integer.compare(s2.getSearchableName().length(), s1.getSearchableName().length());
+            if (lengthComparison != 0) {
+                return lengthComparison;
+            }
+            return s1.getSearchableName().compareTo(s2.getSearchableName());
+        };
 
-        for (Searchable searchable : searchable) {
-            if (searchable != null && searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
-                results.put(searchable.getSearchableName(), searchable);
+        Set<Searchable> results = new TreeSet<>(comparator);
+
+        for (Searchable searchable : searchables) {
+            if (searchable.getSearchTerm().toLowerCase().contains(searchTerm.toLowerCase())) {
+                results.add(searchable);
             }
         }
 
@@ -20,23 +28,21 @@ public class SearchEngine {
     }
 
     public void add(Searchable searchable) {
-        this.searchable.add(searchable);
+        searchables.add(searchable);
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         Searchable bestMatch = null;
         int maxOccurrences = 0;
 
-        for (Searchable searchable : searchable) {
-            if (searchable != null) {
-                String searchTerm = searchable.getSearchTerm().toLowerCase();
-                String searchLower = search.toLowerCase();
-                int occurrences = countOccurrences(searchTerm, searchLower);
+        for (Searchable searchable : searchables) {
+            String searchTerm = searchable.getSearchTerm().toLowerCase();
+            String searchLower = search.toLowerCase();
+            int occurrences = countOccurrences(searchTerm, searchLower);
 
-                if (occurrences > maxOccurrences) {
-                    maxOccurrences = occurrences;
-                    bestMatch = searchable;
-                }
+            if (occurrences > maxOccurrences) {
+                maxOccurrences = occurrences;
+                bestMatch = searchable;
             }
         }
 
