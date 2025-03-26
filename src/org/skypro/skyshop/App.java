@@ -5,6 +5,7 @@ import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixCostProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
@@ -59,6 +60,25 @@ public class App {
         System.out.println("Общая стоимость корзины: " + basket.getTotalCost());
         System.out.println("Есть ли в корзине Яблоко: " + basket.containsProduct("Яблоко"));
         System.out.println("Есть ли в корзине Торт: " + basket.containsProduct("Торт"));
+
+        System.out.println("\nУдаляем 'Банан со скидкой' из корзины:");
+        List<Product> removedProducts = basket.removeProduct("Банан со скидкой");
+        if (!removedProducts.isEmpty()) {
+            System.out.println("Удаленные продукты:");
+            removedProducts.forEach(product -> System.out.println(product.toString()));
+        }
+        System.out.println("\nСодержимое корзины после удаления:");
+        basket.printBasket();
+
+        System.out.println("\nУдаляем несуществующий продукт 'Торт':");
+        List<Product> removedProducts2 = basket.removeProduct("Торт");
+        if (removedProducts2.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+        System.out.println("\nСодержимое корзины после попытки удаления несуществующего продукта:");
+        basket.printBasket();
+
+
         basket.clearBasket();
         System.out.println("Содержимое пустой корзины:");
         basket.printBasket();
